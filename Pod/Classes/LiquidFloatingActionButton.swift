@@ -92,7 +92,6 @@ open class LiquidFloatingActionButton : UIView {
     }
 
     fileprivate func insertCell(_ cell: LiquidFloatingCell) {
-        cell.color  = self.color
         cell.radius = self.frame.width * cellRadiusRatio
         cell.center = self.center.minus(self.frame.origin)
         cell.actionButton = self
@@ -272,8 +271,8 @@ class ActionBarBaseView : UIView {
 
 class CircleLiquidBaseView : ActionBarBaseView {
 
-    let openDuration: CGFloat  = 0.6
-    let closeDuration: CGFloat = 0.2
+    let openDuration: CGFloat  = 0.4
+    let closeDuration: CGFloat = 0.1
     let viscosity: CGFloat     = 0.65
     var animateStyle: LiquidFloatingActionButtonAnimateStyle = .up
     var color: UIColor = UIColor(red: 82 / 255.0, green: 112 / 255.0, blue: 235 / 255.0, alpha: 1.0) {
@@ -389,7 +388,7 @@ class CircleLiquidBaseView : ActionBarBaseView {
     func updateOpen() {
         update(0.1, duration: openDuration) { cell, i, ratio in
             let posRatio = ratio > CGFloat(i) / CGFloat(self.openingCells.count) ? ratio : 0
-            let distance = (cell.frame.height * 0.5 + CGFloat(i + 1) * cell.frame.height * 1.5) * posRatio
+            let distance = (cell.frame.height * 0.5 + CGFloat(i + 1) * cell.frame.height * 1.25) * posRatio
             cell.center = self.center.plus(self.differencePoint(distance))
             cell.update(ratio, open: true)
         }
@@ -397,7 +396,7 @@ class CircleLiquidBaseView : ActionBarBaseView {
     
     func updateClose() {
         update(0, duration: closeDuration) { cell, i, ratio in
-            let distance = (cell.frame.height * 0.5 + CGFloat(i + 1) * cell.frame.height * 1.5) * (1 - ratio)
+            let distance = (cell.frame.height * 0.5 + CGFloat(i + 1) * cell.frame.height * 1.25) * (1 - ratio)
             cell.center = self.center.plus(self.differencePoint(distance))
             cell.update(ratio, open: false)
         }
@@ -458,7 +457,7 @@ open class LiquidFloatingCell : LiquittableCircle {
     weak var actionButton: LiquidFloatingActionButton?
 
     // for implement responsible color
-    fileprivate var originalColor: UIColor
+    open var originalColor: UIColor
     
     open override var frame: CGRect {
         didSet {
